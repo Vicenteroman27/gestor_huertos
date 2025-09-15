@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eliminar Cultivo</title>
+</head>
+<body>
+    <h1>Eliminar Cultivo</h1>
+    <p>¿Seguro que deseas eliminar el cultivo "{{ object.nombre }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+    </form>
+
+    <a href="{% url 'cultivos:lista' %}">Cancelar</a>
+</body>
+</html>

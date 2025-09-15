@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Cultivos</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-primary">Lista de Cultivos</h1>
+
+  <a href="{% url 'cultivos:crear' %}" class="btn btn-success mb-3">Nuevo Cultivo</a>
+
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">Sectores</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+      {% for s in sectores %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ s.nombre }}
+          <span class="badge bg-primary rounded-pill">{{ s.num_cultivos }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <table class="table table-striped table-bordered table-hover bg-white">
+    <thead class="table-dark">
+      <tr>
+        <th>Nombre</th>
+        <th>Fecha Siembra</th>
+        <th>Estado</th>
+        <th>Sector</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in cultivos %}
+      <tr>
+        <td>{{ c.nombre }}</td>
+        <td>{{ c.fecha_siembra }}</td>
+        <td>
+          {% if c.estado == "semilla" %}
+            <span class="badge bg-secondary">{{ c.get_estado_display }}</span>
+          {% elif c.estado == "crecimiento" %}
+            <span class="badge bg-warning text-dark">{{ c.get_estado_display }}</span>
+          {% else %}
+            <span class="badge bg-success">{{ c.get_estado_display }}</span>
+          {% endif %}
+        </td>
+        <td>{{ c.sector.nombre }}</td>
+        <td>
+          <a class="btn btn-primary btn-sm" href="{% url 'cultivos:editar' c.id %}">Editar</a>
+          <a class="btn btn-danger btn-sm" href="{% url 'cultivos:eliminar' c.id %}">Eliminar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center">No hay cultivos registrados</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
